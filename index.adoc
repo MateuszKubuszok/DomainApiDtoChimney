@@ -1,0 +1,51 @@
+= Domain, API, DTO
+
+**Translating between layers with Chimney**
+
+---
+
+Mateusz Kubuszok
+
+== About me
+
+[%step]
+* breaking things in Scala for 9 years
+* a little bit of open source - including co-authoring Chimney for almost 7 years now
+* blog at https://kubuszok.com[Kubuszok.com]
+* niche https://leanpub.com/jvm-scala-book[Things you need to know about JVM (that matter in Scala)] ebook
+
+[NOTE.speaker]
+--
+Chimney is 7 years next month
+--
+
+== Once upon a time
+
+[%step]
+* simple web backend
+* Circe codecs
+* Doobie (well, Slick actually)
+* Protobuf and Kinesis (well, it was Avro and Postgres)
+
+[NOTE.speaker]
+--
+It was long time ago, so let's use some modern stack as an example
+--
+
+===!
+
+[source, scala]
+--
+val test = task
+  .map(identity)
+  .flatMap(a => Something(b))
+  .runSyncUnsafe
+  // result
+--
+
+1. weź JSONa, wrzuć do bazy danych, zwróć poprawionego
+2. weź JSONa, **zwaliduj**, zmodyfikuj, zapisz wynik, zwróc
+3. jw ale pracuj na modelu domenowym
+4. zmień format
+5. pokaz kod wynikowy
+
