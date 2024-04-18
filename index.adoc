@@ -84,22 +84,89 @@ example4.scala
 
 === case class to case class
 
+[%step]
+[source,scala]
+--
+case class Source(a: Int, b: String, c: Boolean)
+case class Target(b: String, a: Int)
+
+import io.scalaland.chimney.dsl.*
+Source(777, "value", c = true).transformInto[Target]
+// Target("value", 777)
+--
+
+[%step]
 [source,scala]
 --
 case class Source(a: Int, b: String)
-case class Target(b: String, a: Int)
-
-Source(777, "value").transformInto[Target]
-// Target("value", 777)
-
 case class Target2(b: String, a: Int, extra: Double)
 
+import io.scalaland.chimney.dsl.*
 Source(777, "value").into[Target2]
   .withFieldConst(_.extra, 3.14) 
   .transform // Target2("value", 777, 3.14)
+Source(777, "value").into[Target2]
+  .withFieldComputed(_.extra, src => src.a.toDouble) 
+  .transform // Target2("value", 777, 777.0)
 --
 
-TODO: ADT
-TODO: collections
-TODO: options
-TODO: partials
+=== ADT to ADT
+
+[%step]
+[source,scala]
+--
+enum Source:
+  case Foo, Bar(b: Int)
+enum Target:
+  case Foo, Bar(b: Int), Baz
+
+import io.scalaland.chimney.dsl.*
+(Source.Bar(777): Source).transformInto[Target]
+// Target.Bar(777)
+--
+
+[%step]
+[source,scala]
+--
+enum Source:
+  case Foo, Bar(b: Int), Baz
+enum Target:
+  case Foo, Bar(b: Int)
+
+import io.scalaland.chimney.dsl.*
+(Source.Baz: Source).into[Target]
+  .withEnumCaseHandled[Source.Baz](_ => Target.Foo)
+  .transform // Target.Foo
+--
+
+=== Collections
+
+[%step]
+[source,scala]
+--
+case class Source(a: Int, b: String, c: Boolean)
+case class Target(b: String, a: Int)
+
+import io.scalaland.chimney.dsl.*
+List(Source(777, "value")).transformInto[Vector[Target]]
+// Vector(Target("value", 777))
+--
+
+[%step]
+[source,scala]
+--
+case class Source(a: Int, b: String)
+case class Target2(b: String, a: Int, extra: Double)
+
+import io.scalaland.chimney.dsl.*
+List(Source(777, "value")).into[Vector[Target]]
+  .withFieldConst(_.eachItem.extra, 3.14)
+  .transform // Vector(Target("value", 777, 3.14))
+--
+
+== More info
+
+* https://chimney.readthedocs.io
+* https://github.com/scalalandio/chimney
+
+== Thank you !
