@@ -1,4 +1,6 @@
-# Presentation title
+# Domain, API, DTO - translating between layers with Chimney
+
+Examples are at https://github.com/MateuszKubuszok/DomainApiDtoChimneyExample
 
 ## Running
 
